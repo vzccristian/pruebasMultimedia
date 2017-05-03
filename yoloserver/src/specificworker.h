@@ -45,9 +45,103 @@ public slots:
 	void compute();
 
 private:
+	struct listImg
+	{
+		unsigned int id, id_first;
+		QMutex mlist;
+		std::map<int, image> map_imgs;
+		void listImg()
+		{
+			id = 0;
+			id_first = 0;
+		}
+		unsigned int push(image img)
+		{
+				QMutexLocker locker(mlist);
+				map_imgs[id] = img;
+				id++;
+				return id-1;
+		};
+
+		image pop()
+		{
+			QMutexLocker locker(mlist);
+			image img = map_imgs.at(id_first);
+			mlist.erase(id_first);
+			id_first++;
+			return img;
+		};
+		image get(unsigned int id)
+		{
+			QMutexLocker locker(mlist);
+			return map_imgs.at(id);
+		};
+
+		bool emty()
+		{
+			QMutexLocker locker(mlist);
+			return map_imgs.size()==0;
+		};
+
+		unsigned int size()
+		{
+			QMutexLocker locker(mlist);
+			return map_imgs.size();
+		};
+	};
+
+	struct listBoxs
+	{
+		QMutex mlist;
+		std::map<unsigned int, listBox> map_Box;
+
+		void push(listBox lBox, unsigned int id)
+		{
+				QMutexLocker locker(mlist);
+				map_Box[id] = lBox;
+		};
+
+		listBox get(unsigned int id)
+		{
+			QMutexLocker locker(mlist);
+			return map_Box.at(id);
+		};
+
+		void erase(unsigned int id)
+		{
+			QMutexLocker locker(mlist);
+			map_Box.erase(id);
+		};
+		bool emty()
+		{
+			QMutexLocker locker(mlist);
+			return map_Box.size()==0;
+		};
+
+		unsigned int size()
+		{
+			QMutexLocker locker(mlist);
+			return map_Box.size();
+		};
+		bool find(unsigned int id)
+		{
+			QMutexLocker locker(mlist);
+			try
+			{
+				map_Box.at(id);
+				return true;
+			}
+			catch(...)
+			{
+				return false;
+			}
+		};
+	};
+
+	listBoxs lBoxs;
+	listImg lImgs;
 	InnerModel *innerModel;
-	
+
 };
 
 #endif
-

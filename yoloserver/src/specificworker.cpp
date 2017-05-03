@@ -31,7 +31,7 @@ SpecificWorker::SpecificWorker(MapPrx& mprx) : GenericWorker(mprx)
 */
 SpecificWorker::~SpecificWorker()
 {
-	
+
 }
 
 bool SpecificWorker::setParams(RoboCompCommonBehavior::ParameterList params)
@@ -48,9 +48,9 @@ bool SpecificWorker::setParams(RoboCompCommonBehavior::ParameterList params)
 
 
 
-	
+
 	timer.start(Period);
-	
+
 
 	return true;
 }
@@ -58,34 +58,33 @@ bool SpecificWorker::setParams(RoboCompCommonBehavior::ParameterList params)
 void SpecificWorker::compute()
 {
 	QMutexLocker locker(mutex);
-	//computeCODE
-// 	try
-// 	{
-// 		camera_proxy->getYImage(0,img, cState, bState);
-// 		memcpy(image_gray.data, &img[0], m_width*m_height*sizeof(uchar));
-// 		searchTags(image_gray);
-// 	}
-// 	catch(const Ice::Exception &e)
-// 	{
-// 		std::cout << "Error reading from Camera" << e << std::endl;
-// 	}
 }
 
 
 int SpecificWorker::addImage(const image &img)
 {
-//implementCODE
-
+	image im;
+	for(int k = 0; k < 3; ++k){
+      for( int j = 0; j < img.h; ++j){
+          for( int i = 0; i < img.w; ++i)
+					{
+              int dst_index = i + w*j + w*h*k;
+              int src_index = k + c*i + c*w*j;
+              im.data[dst_index] = (float)data[src_index]/255.;
+          }
+      }
+  }
+	return lImgs.push(im);
 }
 
 data SpecificWorker::getData(const int id)
 {
-//implementCODE
-
+	data d;
+	d.isReady = lBoxs.find(id);
+	if(d.isReady==true)
+	{
+		d.lBox = lBoxs.get(id)
+		lBoxs.erase(id)
+	}
+	retunr d;
 }
-
-
-
-
-
-
