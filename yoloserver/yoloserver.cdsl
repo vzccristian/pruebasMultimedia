@@ -1,0 +1,11 @@
+import "/robocomp/interfaces/IDSLs/yoloserver.idsl";
+
+Component yoloserver
+{
+	Communications
+	{
+		implements YoloServer;
+	};
+	language Cpp;
+	gui Qt(QWidget);
+};
