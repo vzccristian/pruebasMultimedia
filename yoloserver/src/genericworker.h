@@ -61,7 +61,8 @@ public:
 	
 
 
-	virtual listBox procesarImagen(const image &img) = 0;
+	virtual int addImage(const image &img) = 0;
+	virtual data getData(const int id) = 0;
 
 protected:
 	QTimer timer;

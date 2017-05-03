@@ -34,7 +34,8 @@ public:
 	YoloServerI(GenericWorker *_worker);
 	~YoloServerI();
 	
-	listBox procesarImagen(const image  &img, const Ice::Current&);
+	int addImage(const image  &img, const Ice::Current&);
+	data getData(const int  id, const Ice::Current&);
 
 private:
 

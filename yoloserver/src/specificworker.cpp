@@ -72,7 +72,13 @@ void SpecificWorker::compute()
 }
 
 
-listBox SpecificWorker::procesarImagen(const image &img)
+int SpecificWorker::addImage(const image &img)
+{
+//implementCODE
+
+}
+
+data SpecificWorker::getData(const int id)
 {
 //implementCODE
 

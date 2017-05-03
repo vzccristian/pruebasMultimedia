@@ -28,9 +28,14 @@ YoloServerI::~YoloServerI()
 {
 }
 
-listBox YoloServerI::procesarImagen(const image  &img, const Ice::Current&)
+int YoloServerI::addImage(const image  &img, const Ice::Current&)
 {
-	return worker->procesarImagen(img);
+	return worker->addImage(img);
+}
+
+data YoloServerI::getData(const int  id, const Ice::Current&)
+{
+	return worker->getData(id);
 }
 
 

@@ -38,7 +38,8 @@ public:
 	~SpecificWorker();
 	bool setParams(RoboCompCommonBehavior::ParameterList params);
 
-	listBox procesarImagen(const image &img);
+	int addImage(const image &img);
+	data getData(const int id);
 
 public slots:
 	void compute();
