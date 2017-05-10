@@ -32,8 +32,12 @@
 
 
 extern "C" {
-    void test_detector(char *datacfg, char *cfgfile, char *weightfile, char *filename, float thresh, float hier_thresh);
-    void init_detector(char *datacfg, char *cfgfile, char *weightfile, float thresh, float hier_thresh, image im);
+#include <yololib/src/image.h>
+	
+    void test_detector(char *datacfg, char *cfgfile, char *weightfile, float thresh, float hier_thresh, image im);
+    void init_detector(char *datacfg, char *cfgfile, char *weightfile, char *filename,float thresh, float hier_thresh);
+image load_image_color(char *filename, int w, int h);
+
 //    void cuda_set_device(int n);
     //#include "cuda.h"
 }
