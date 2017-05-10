@@ -22,7 +22,7 @@ import sys, os, traceback, time
 from PySide import *
 from genericworker import *
 import cv2
-
+import scipy.misc as sp_misc
 
 class SpecificWorker(GenericWorker):
 	def __init__(self, proxy_map):
@@ -43,15 +43,19 @@ class SpecificWorker(GenericWorker):
 	def compute(self):
 		try:
 			print 'SpecificWorker.compute...'
-			img = cv2.imread('/home/ivan/robocomp/components/multimedia/pruebasMultimedia/yoloserver/src/yololib/dehesa_humano.jpg',cv2.IMREAD_COLOR)
-			im = Image()
+			img = sp_misc.imread('/home/crivac/robocomp/components/pruebasMultimedia/yoloserver/src/yololib/dehesa_humano.jpg')
 			height, width, channels = img.shape
+			img = img.reshape(img.shape[0]*img.shape[1]*img.shape[2])
+
+			#img = cv2.imread('/home/crivac/robocomp/components/pruebasMultimedia/yoloserver/src/yololib/dehesa_humano.jpg',cv2.IMREAD_COLOR)
+			im = Image()
+			
 			print height, width
-			b,g,r = cv2.split(img)
+			#b,g,r = cv2.split(img)
 			im.w=width
 			im.h=height
-			
-			print 56
+			im.lpixel=[]
+			im.lpixel = img
 			id = self.yoloserver_proxy.addImage(im)
 			print "el id es: ", id
 			while self.yoloserver_proxy.getData(id):
