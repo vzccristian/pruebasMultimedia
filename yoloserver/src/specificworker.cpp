@@ -34,9 +34,12 @@ SpecificWorker::~SpecificWorker()
 
 }
 
+
 bool SpecificWorker::setParams(RoboCompCommonBehavior::ParameterList params)
 {
+	qDebug() <<__LINE__;
         init_detector("src/yololib/cfg/coco.data", "src/yololib/yolo.cfg", "src/yololib/yolo.weights", "src/yololib/dehesa_humano.jpg", .24, .5);
+	qDebug() <<__LINE__;
 
   	timer.start(0);
 	return true;
@@ -44,19 +47,13 @@ bool SpecificWorker::setParams(RoboCompCommonBehavior::ParameterList params)
 
 void SpecificWorker::compute()
 {
-    qDebug() << "hola";
-		char *filename ="src/yololib/dehesa_humano.jpg";
-		if(filename){
-				strncpy(input, filename, 256);
-		} else {
-				printf("Enter Image Path: ");
-				fflush(stdout);
-				input = fgets(input, 256, stdin);
-				if(!input) return;
-				strtok(input, "\n");
-		}
-		image im = load_image_color(input,0,0);
-
+	char buff[256];
+	char *input = buff;
+	qDebug() << "hola";
+	char *filename ="src/yololib/dehesa_humano.jpg";
+	strncpy(input, filename, 256);
+	image im = load_image_color(input,0,0);
+	qDebug() << "Yolo_test_detector";
     test_detector("src/yololib/cfg/coco.data", "src/yololib/yolo.cfg", "src/yololib/yolo.weights", .24, .5, im);
 }
 
