@@ -1,0 +1,11 @@
+import "/robocomp/interfaces/IDSLs/yoloserver.idsl";
+
+Component clientyoloserver
+{
+	Communications
+	{
+		requires YoloServer;
+	};
+	language Python;
+	gui Qt(QWidget);
+};
