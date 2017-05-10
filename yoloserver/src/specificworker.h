@@ -33,7 +33,7 @@
 
 extern "C" {
     void test_detector(char *datacfg, char *cfgfile, char *weightfile, char *filename, float thresh, float hier_thresh);
-    void init_detector(char *datacfg, char *cfgfile, char *weightfile, char *filename, float thresh, float hier_thresh);
+    void init_detector(char *datacfg, char *cfgfile, char *weightfile, float thresh, float hier_thresh, image im);
 //    void cuda_set_device(int n);
     //#include "cuda.h"
 }
