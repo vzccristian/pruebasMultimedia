@@ -1,8 +1,8 @@
-CommonBehavior.Endpoints=tcp -p 1
+CommonBehavior.Endpoints=tcp -p 11000
 
 
 # Endpoints for implemented interfaces
-YoloServer.Endpoints=tcp -p 0
+YoloServer.Endpoints=tcp -p 11001
 
 
 

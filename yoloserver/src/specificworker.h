@@ -30,6 +30,14 @@
 #include <genericworker.h>
 #include <innermodel/innermodel.h>
 
+
+extern "C" {
+    void test_detector(char *datacfg, char *cfgfile, char *weightfile, char *filename, float thresh, float hier_thresh);
+    void init_detector(char *datacfg, char *cfgfile, char *weightfile, char *filename, float thresh, float hier_thresh);
+//    void cuda_set_device(int n);
+    //#include "cuda.h"
+}
+
 class SpecificWorker : public GenericWorker
 {
 Q_OBJECT
@@ -38,94 +46,94 @@ public:
 	~SpecificWorker();
 	bool setParams(RoboCompCommonBehavior::ParameterList params);
 
-	int addImage(const image &img);
-	data getData(const int id);
+	int addImage(const Image &img);
+	Labels getData(const int id);
 
 public slots:
 	void compute();
 
 private:
-	struct listImg
+	struct ListImg
 	{
 		unsigned int id, id_first;
 		QMutex mlist;
-		std::map<int, image> map_imgs;
+		std::map<int, Image> map_imgs;
 		void listImg()
 		{
 			id = 0;
 			id_first = 0;
 		}
-		unsigned int push(image img)
+		unsigned int push(Image img)
 		{
-				QMutexLocker locker(mlist);
+				QMutexLocker locker(&mlist);
 				map_imgs[id] = img;
 				id++;
 				return id-1;
 		};
 
-		image pop()
+		Image pop()
 		{
-			QMutexLocker locker(mlist);
-			image img = map_imgs.at(id_first);
-			mlist.erase(id_first);
+			QMutexLocker locker(&mlist);
+			Image img = map_imgs.at(id_first);
+			map_imgs.erase(id_first);
 			id_first++;
 			return img;
 		};
-		image get(unsigned int id)
+		Image get(unsigned int id)
 		{
-			QMutexLocker locker(mlist);
+			QMutexLocker locker(&mlist);
 			return map_imgs.at(id);
 		};
 
-		bool emty()
+		bool empty()
 		{
-			QMutexLocker locker(mlist);
+			QMutexLocker locker(&mlist);
 			return map_imgs.size()==0;
 		};
 
 		unsigned int size()
 		{
-			QMutexLocker locker(mlist);
+			QMutexLocker locker(&mlist);
 			return map_imgs.size();
 		};
 	};
 
-	struct listBoxs
+	struct ListBoxs
 	{
 		QMutex mlist;
-		std::map<unsigned int, listBox> map_Box;
+		std::map<unsigned int, ListBox> map_Box;
 
-		void push(listBox lBox, unsigned int id)
+		void push(ListBox lBox, unsigned int id)
 		{
-				QMutexLocker locker(mlist);
-				map_Box[id] = lBox;
+			QMutexLocker locker(&mlist);
+			map_Box[id] = lBox;
 		};
 
-		listBox get(unsigned int id)
+		ListBox get(unsigned int id)
 		{
-			QMutexLocker locker(mlist);
+			QMutexLocker locker(&mlist);
 			return map_Box.at(id);
 		};
 
 		void erase(unsigned int id)
 		{
-			QMutexLocker locker(mlist);
+			QMutexLocker locker(&mlist);
 			map_Box.erase(id);
 		};
 		bool emty()
 		{
-			QMutexLocker locker(mlist);
+			QMutexLocker locker(&mlist);
 			return map_Box.size()==0;
 		};
 
 		unsigned int size()
 		{
-			QMutexLocker locker(mlist);
+			QMutexLocker locker(&mlist);
 			return map_Box.size();
 		};
 		bool find(unsigned int id)
 		{
-			QMutexLocker locker(mlist);
+			QMutexLocker locker(&mlist);
 			try
 			{
 				map_Box.at(id);
@@ -138,8 +146,8 @@ private:
 		};
 	};
 
-	listBoxs lBoxs;
-	listImg lImgs;
+	ListBoxs lBoxs;
+	ListImg lImgs;
 	InnerModel *innerModel;
 
 };

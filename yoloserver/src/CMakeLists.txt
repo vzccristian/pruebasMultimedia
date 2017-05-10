@@ -29,8 +29,7 @@ SET ( SOURCES
   yoloserverI.cpp
 )
 
-
-
+FIND_PACKAGE( Qt4 REQUIRED )
 #ROBOCOMP
 ROBOCOMP_INITIALIZE( $ENV{ROBOCOMP}/ )
 ROBOCOMP_WRAP_ICE( CommonBehavior yoloserver )

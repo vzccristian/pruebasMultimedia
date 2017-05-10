@@ -3,7 +3,9 @@
 SET ( SOURCES
   specificworker.cpp
   specificmonitor.cpp
-)
+  )
+  
+INCLUDE( $ENV{ROBOCOMP}/cmake/modules/opencv2.cmake )
 
 # Headers set
 SET ( HEADERS
@@ -11,5 +13,13 @@ SET ( HEADERS
   specificmonitor.h
 )
 
-ADD_DEFINITIONS( -std=c++11 )
+add_definitions(-O4 -g)
 
+
+#SET (LIBS -L/usr/local/cuda/lib64 -lcuda -lcudart -lcublas -lcurand ${LIBS} -L/usr/local/cuda/lib64 -lcuda -lcudart -lcublas -lcurand )
+
+SET (LIBS -lyolo)
+
+#ADD_DEFINITIONS( -std=c++11 -I/usr/local/cuda/include/ -DOPENCV -DCUDA)
+
+ADD_DEFINITIONS( -std=c++11 )

@@ -35,56 +35,63 @@ SpecificWorker::~SpecificWorker()
 }
 
 bool SpecificWorker::setParams(RoboCompCommonBehavior::ParameterList params)
-{
-//       THE FOLLOWING IS JUST AN EXAMPLE
-//
-//	try
-//	{
-//		RoboCompCommonBehavior::Parameter par = params.at("InnerModelPath");
-//		innermodel_path = par.value;
-//		innermodel = new InnerModel(innermodel_path);
-//	}
-//	catch(std::exception e) { qFatal("Error reading config params"); }
-
-
-
-
-	timer.start(Period);
-
-
+{    
+        init_detector("src/yololib/cfg/coco.data", "src/yololib/yolo.cfg", "src/yololib/yolo.weights", "src/yololib/dehesa_humano.jpg", .24, .5);
+        
+  	timer.start(0);
 	return true;
 }
 
 void SpecificWorker::compute()
 {
-	QMutexLocker locker(mutex);
+    qDebug() << "hola";
+    test_detector("src/yololib/cfg/coco.data", "src/yololib/yolo.cfg", "src/yololib/yolo.weights", "src/yololib/dehesa_humano.jpg", .24, .5);
 }
 
-
-int SpecificWorker::addImage(const image &img)
+int SpecificWorker::addImage(const Image &img)
 {
-	image im;
-	for(int k = 0; k < 3; ++k){
-      for( int j = 0; j < img.h; ++j){
-          for( int i = 0; i < img.w; ++i)
-					{
-              int dst_index = i + w*j + w*h*k;
-              int src_index = k + c*i + c*w*j;
-              im.data[dst_index] = (float)data[src_index]/255.;
-          }
-      }
-  }
+	Image im;
+	for(int k = 0; k < 3; ++k)
+	{
+      		for( int j = 0; j < img.h; ++j)
+		{
+          		for( int i = 0; i < img.w; ++i)
+			{
+              			int dst_index = i + img.w*j + img.h*k;
+              			int src_index = k + i + img.w*j;
+              			im.lpixel[dst_index] = (img.lpixel[src_index]); // /255;
+          		}
+      		}
+  	}
 	return lImgs.push(im);
 }
 
-data SpecificWorker::getData(const int id)
+Labels SpecificWorker::getData(const int id)
 {
-	data d;
+	Labels d;
 	d.isReady = lBoxs.find(id);
 	if(d.isReady==true)
 	{
-		d.lBox = lBoxs.get(id)
-		lBoxs.erase(id)
+		d.lBox = lBoxs.get(id);
+		lBoxs.erase(id);
 	}
-	retunr d;
+	return d;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
